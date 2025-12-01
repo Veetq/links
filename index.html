@@ -20,7 +20,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: hsl(220, 25%, 8%);
+            background: hsl(220, 25%, 6%);
             color: hsl(210, 40%, 98%);
             min-height: 100vh;
             display: flex;
@@ -34,32 +34,59 @@
         .bg-layer {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom right, hsl(220, 25%, 8%), hsl(220, 20%, 12%), hsl(220, 25%, 8%));
+            background: 
+                radial-gradient(ellipse at 20% 20%, hsl(220, 40%, 12%) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, hsl(230, 30%, 10%) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, hsl(220, 25%, 8%) 0%, hsl(220, 25%, 4%) 100%);
+        }
+
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(hsl(220, 20%, 15%, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, hsl(220, 20%, 15%, 0.3) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
         }
 
         .glow-1 {
             position: absolute;
-            top: 25%;
-            left: 25%;
-            width: 24rem;
-            height: 24rem;
-            background: hsl(190, 95%, 55%, 0.2);
+            top: 20%;
+            left: 15%;
+            width: 30rem;
+            height: 30rem;
+            background: hsl(190, 95%, 55%, 0.15);
             border-radius: 50%;
-            filter: blur(128px);
-            animation: pulse 2s ease-in-out infinite;
+            filter: blur(100px);
+            animation: float 8s ease-in-out infinite;
         }
 
         .glow-2 {
             position: absolute;
-            bottom: 25%;
-            right: 25%;
-            width: 24rem;
-            height: 24rem;
-            background: hsl(190, 95%, 55%, 0.2);
+            bottom: 20%;
+            right: 15%;
+            width: 25rem;
+            height: 25rem;
+            background: hsl(260, 80%, 60%, 0.12);
             border-radius: 50%;
-            filter: blur(128px);
-            animation: pulse 2s ease-in-out infinite;
-            animation-delay: 1s;
+            filter: blur(100px);
+            animation: float 8s ease-in-out infinite;
+            animation-delay: 4s;
+        }
+
+        .glow-3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40rem;
+            height: 40rem;
+            background: hsl(200, 90%, 50%, 0.08);
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: pulse 4s ease-in-out infinite;
         }
 
         .container {
@@ -101,9 +128,9 @@
         .social-card {
             position: relative;
             overflow: hidden;
-            background: hsl(220, 15%, 10%);
-            backdrop-filter: blur(8px);
-            border: 1px solid hsl(220, 15%, 18%);
+            background: hsl(220, 20%, 10%, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid hsl(220, 15%, 20%);
             border-radius: 1rem;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -114,8 +141,8 @@
 
         .social-card:hover {
             transform: scale(1.1);
-            border-color: hsl(190, 95%, 55%, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border-color: hsl(190, 95%, 55%, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px hsl(190, 95%, 55%, 0.15);
         }
 
         .social-card::before {
@@ -171,6 +198,39 @@
             color: hsl(215, 20%, 65%);
         }
 
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: hsl(220, 20%, 12%);
+            border: 1px solid hsl(190, 95%, 55%, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: hsl(210, 40%, 98%);
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px hsl(190, 95%, 55%, 0.1);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: hsl(190, 95%, 55%);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -198,14 +258,22 @@
                 opacity: 1;
             }
             50% {
-                opacity: 0.5;
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
             }
         }
 
         .social-card:nth-child(1) { animation-delay: 0s; }
         .social-card:nth-child(2) { animation-delay: 0.1s; }
         .social-card:nth-child(3) { animation-delay: 0.2s; }
-        .social-card:nth-child(4) { animation-delay: 0.3s; }
 
         @media (max-width: 768px) {
             .title {
@@ -218,13 +286,19 @@
                 width: 72px;
                 height: 72px;
             }
+            .glow-1, .glow-2, .glow-3 {
+                width: 15rem;
+                height: 15rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="bg-layer"></div>
+    <div class="grid-overlay"></div>
     <div class="glow-1"></div>
     <div class="glow-2"></div>
+    <div class="glow-3"></div>
 
     <div class="container">
         <div class="header">
@@ -249,7 +323,7 @@
                 </button>
             </div>
 
-            <div class="social-card telegram" onclick="copyTelegram()">
+            <div class="social-card telegram" onclick="openTelegram()">
                 <button class="social-button">
                     <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635z"/>
@@ -263,19 +337,35 @@
         </div>
     </div>
 
+    <div class="toast" id="toast">
+        <svg class="toast-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span id="toast-message">Copied!</span>
+    </div>
+
     <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
         function openEmail() {
             window.open('mailto:veetipromo@gmail.com', '_blank');
         }
 
         function copyDiscord() {
             navigator.clipboard.writeText('veetiq');
-            alert('Discord username copied!');
+            showToast('Discord username copied!');
         }
 
-        function copyTelegram() {
-            navigator.clipboard.writeText('@seaqul');
-            alert('Telegram username copied!');
+        function openTelegram() {
+            window.open('https://t.me/seaqul', '_blank');
         }
     </script>
 </body>
